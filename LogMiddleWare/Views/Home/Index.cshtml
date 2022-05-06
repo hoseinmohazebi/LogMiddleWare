@@ -1,0 +1,99 @@
+﻿@model HomeVm
+@{
+    ViewData["Title"] = "Home Page";
+}
+
+<style>
+    .container {
+        max-width: fit-content;
+    }
+</style>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th scope="col">#</th>
+            <th scope="col">Event <i class="fa fa-sort"></i></th>
+            <th scope="col">User</th>
+            <th scope="col">Date</th>
+            <th scope="col">Time<i class="fa fa-sort"></i></th>
+            <th scope="col">Ip<i class="fa fa-sort"></i></th>
+            <th scope="col">QueryString<i class="fa fa-sort"></i></th>
+            <th scope="col">request<i class="fa fa-sort"></i></th>
+            <th scope="col">response<i class="fa fa-sort"></i></th>
+        </tr>
+    </thead>
+    <tbody>
+        @for (var i = 0; i < Model.Logs.Count; i++)
+        {
+            <tr>
+                <td scope="row">@(i+1)</td>
+                <td>@Model.Logs[i].Event</td>
+                <td>@Model.Logs[i].UserName</td>
+                <td>@Model.Logs[i].Date</td>
+                <td>@Model.Logs[i].Time</td>
+                <td>@Model.Logs[i].Ip</td>
+                <td>@Model.Logs[i].QueryString</td>
+                <td>@Model.Logs[i].RequestBody</td>
+                <td>@Model.Logs[i].ResponseBody</td>
+
+            </tr>
+        }
+
+        <tr>
+            <th scope="row">3</th>
+            <td>Larry</td>
+            <td>the Bird</td>
+            <td>twitter</td>
+        </tr>
+    </tbody>
+</table>
+
+<script>
+
+     $("#searchInput").change(function(){
+    console.log(this.value);
+    var formData = {search:this.value};
+       $.ajax({url: "/home/search",
+                    method: 'post',
+                    data: formData,
+                    success: function(result){
+
+                         $('#bodyId').empty();
+                         for(let q = 0 ; q < result.logs.length ; q++){
+                         console.log( result.logs[q]);
+
+                            $('#bodyId').append(`<tr><td>${q+1}</td><td>${result.logs[q].event}</td><td>${result.logs[q].userName ?? ""}</td><td>${result.logs[q].date}</td><td>${result.logs[q].time}</td><td>${result.logs[q].ip}</td><td>${result.logs[q].queryString??""}</td><td>${result.logs[q].requestBody??""}</td><td>${result.logs[q].responseBody}</td></tr>`);
+                         }
+                        // for(var q = 0 , q < result.logs.length,q++){
+                        //     $('#bodyId').append(`
+                        //    <tr>
+                        //    <td>${i+1}</td>
+                        //    <td>${result.logs[q].event}</td>
+                        //    <td>${result.logs[q].UserName}</td>
+                        //    <td>${result.logs[q].Date}</td>
+                        //    <td>${result.logs[q].Time}</td>
+                        //    <td>${result.logs[q].Ip}</td>
+                        //    <td>${result.logs[q].QueryString}</td>
+                        //    <td>${result.logs[q].RequestBody}</td>
+                        //    <td>${result.logs[q].ResponseBody}</td>
+                        //    </tr>`);
+                        //}
+             }});
+
+    });
+
+    //$("#searchInput").change(function(){
+    //                    debugger;
+    // var formData = {value:this.value}; //Array
+    //  $.ajax({url: "/home/search",
+    //                method='post',
+    //                data :FormData,
+    //                success: function(result){
+    //                    debugger;
+    //                        console.log(result);
+    //                        $("#div1").html(result);
+    //         }});
+    //});
+</script>
+
